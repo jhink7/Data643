@@ -1,0 +1,56 @@
+---
+title: "DATA 643 - Discussion 1"
+output:
+  html_document:
+    css: lab_mod.css
+    highlight: pygments
+    theme: cerulean
+  pdf_document: default
+---
+
+1.  System Under Examination
+
+Amazon Prime Video.  Specifically, I'll discuss the Playstation 4 version of the app as that is how I primarily interact with the system.
+
+2.  Scenario Analysis
+
+###### Who are the target users?
+
+Prime Video aims to cast a fairly wide net.  Anybody with a smart TV, game console, tablet, smartphone and the ability to pay $120 a year are targetted.  This would normally include most people in North America, Western Europe, and large portions of the rest of the world.  However, due to licensing complications, the service is only available in US locations.
+
+###### What are their key goals?
+
+Our user's goals are to have as much content available to them in the most searchable, discoverable fashion possible.  They will want to watch the things they know they like as well as things they don't know they like (yet).
+
+###### How can they be helped to achieve these goals?
+
+A clean ui that is easy to navigate.  Backing algorithms that have a good understanding of user's content preferences.  Low latency search tasks are an obvious must.  Anything over 100 ms is going to leave the system feeling crufty and half baked.
+
+3.  Reverse Engineering
+
+Amazon Prime Video likely builds recommendations on (at the very least) the following variables:
+
+variable         | description                                      | type
+---------------- | ------------------------------------------------ | -----
+`contentRatings` | The target user's ratings of content             | Numerical, Discrete
+`user_age`       | Age of the user.                                 | Numerical, Discrete
+`user_location`  | Where the user lives                             | Categorical
+`content_genre`  | The genre of the content                         | Categorical
+`content_age`    | The age (or year produced) of content            | Numerical, Continuous
+`search_history` | Things users have actively searched for          | Categorical
+`content_reviews`| Average scores from IMDB and RottenTomatoes      | Numerical, Continuous
+`time_of_day`    | Time user is interacting with system             | Numerical, Continuous
+
+###### Algorithm
+
+While very difficult to ascertain what it's doing directly, I'm guessing the algo that powers Amazon Prime Video's recommendations create similarity scores for other users (based on your viewing/rating history) as well as similarity scores for content you've flagged as something you've strongly liked.  It then probably uses these two sets of data (users with a similar history and content with similar attributes to things you've liked) and orders content you have not watched in order from highest to lowest.
+
+4.  Possible Improvements
+
+The method to input data in the PS4 (a game controller) is really terrible.  Text based searches should almost not even be an option.  Voice based searches are clearly the direction this is going. ('Alexa/Siri/Cortana, play Goodfellas for me. ' etc).
+
+A specific annoyance for the PS4 interface is the fact it loses track of your traversal path in their menus/submenus.  By that I mean, if you start in the main menu, traverse down to category A's submenu, select it and begin traversing its' content, pressing "back" will send you to the top of the root menu, not the entry poin of submenu A.  This is a bad user experience (and this was quite possibly a bad explanation of the bug).
+
+There should be a checkbox/toggle at the very top where you can only have items you don't have to pay more for to show up.
+
+

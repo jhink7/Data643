@@ -1,0 +1,56 @@
+---
+title: "DATA 643 - Discussion 3"
+output:
+  html_document:
+    css: lab_mod.css
+    highlight: pygments
+    theme: cerulean
+  pdf_document: default
+---
+
+1. Player Projections in Pro Sports
+
+Almost all of the algorithmic projection systems that have released any of their "secret sauce" incorporate the concept of weighting past performance when trying to determine how a player will perform in the future (all a team should actually care about).  For an example, if I wanted to predict Mike Trout's (a baseball player) on base percentage, taking how he performed over the last 3 years and averaging them together with even yearly weights would do an ok job. 
+
+The next step to take towards creating a semi-usable model is to weight past seasons appropriately.  This might be a relative weight of 5 for the previous season, 4 for two years ago and 3 for 3 years ago.  These numbers are tweakable and depend largely on the sport and what statistic you are trying to project.
+
+Once the ideal weights have been figured out (often a trial and error process), another tweakable factor comes into play. These types of projections almost universally perform better once some degree of regression to the mean is applied.  What this means is that you take your weighted average of the target player's performance over the past 3 (or however many years) and then do a 2nd weighted average with some number of league average performance of the statistic you are projecting.
+
+Admittedly, That isn't the most clear explanation.  Tom Tango, one of the authorities in sports analytics, does a better job.  
+
+http://www.tangotiger.net/archives/stud0346.shtml
+
+While incredibly simple, this system does a really good job and has comparable performance to proprietary systems that try to do fancy things (Such as Nate Silver's PECOTA system that made him internet baseball famous before he started predicting elections with 100% accuracy).  
+
+2. Code Sample
+
+Here's a dead simple implmentation that I used in a past project (with some custom error handling stripped out).  It's in C#, which I was allowed to use before I moved to Silicon Valley.
+
+```{java, eval=FALSE}
+        public double WeightAndApplyRTTM3Year(double measure1, double measure2, double measure3,
+            double ptWeight1, double ptWeight2, double ptWeight3,
+            double leagueAvg, double decay, double regK)
+        {
+            double retVal = 0;
+
+            if (!(ptWeight1 == 0 && ptWeight2 == 0 && ptWeight3 == 0))
+            {
+                // Step1: calculate weighted average on past performance
+                var temp = (measure1 * ptWeight1
+                    + measure2 * ptWeight2 * decay
+                    + measure3 * ptWeight3 * Math.Pow(decay, 2))
+                    / (ptWeight1 + ptWeight2 * decay + ptWeight3 * Math.Pow(decay, 2));
+
+                // Step2: Apply regression to the mean
+                retVal = (temp * (ptWeight1 + ptWeight2 * decay + ptWeight3 * Math.Pow(decay, 2))
+                    + regK * leagueAvg)
+                    / (regK + (ptWeight1 + ptWeight2 * decay + ptWeight3 * Math.Pow(decay, 2)));
+            }
+            else {
+                // throw or handle edge case
+            }
+
+            return retVal;
+        }
+```
+

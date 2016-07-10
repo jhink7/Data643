@@ -1,0 +1,24 @@
+---
+title: "DATA 643 - Discussion 4"
+output:
+  html_document:
+    css: lab_mod.css
+    highlight: pygments
+    theme: cerulean
+  pdf_document: default
+---
+
+1. Company Examined
+
+Facebook
+
+2. Feature Examined
+
+"People You May Know"
+
+3. A Brief Explanation
+
+Facebook's People You May Know feature is an example of a recommendation system that very likely uses a graph (or network) to make recommendations for people and business you may want to connect with.  The feature is presents it's information in a fairly simple manner:  A list of potential contacts with their names and number of mutual contacts.
+
+The algorithm likely scans your current contacts, their contacts and their contacts' contacts (etc) and assigns a recommendation score based on how many mutual contacts you have, how many 2nd (3rd, 4th) degree contacts you have.  Logic is put into place to not recommend someone already in your current friends list.  There also seems to be a degree of randomness to the top recommendations it actually presents the user.  Each page refresh will likely result in a different groups of candidate friends.
+
